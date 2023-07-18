@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Header from "./Header.jsx"
+import Footer from "./Footer.jsx"
+import CreateNote from "./CreateNote.jsx";
+import Node from "./Node.jsx";
+
+const App = () =>{
+
+   const [addItem,setAddItem] = useState([]);
+
+   const addNote = (note) =>{
+      setAddItem((prevData)=>{
+           return[...prevData,note];
+      });
+      console.log(note);
+   };
+/*
+const onDelete = (id) => {
+    setAddItem((oldData)=> {
+      oldData.filter((currdata,indx) => {
+            return indx !== id;
+      });
+    });
+};
+*/
+
+ const onDelete = (id) => {
+    setAddItem((oldData)=> 
+      oldData.filter((currdata,indx)=>{
+         return indx!== id;
+      })
+    );
+};
+
+  
+	return(
+           <>
+             <Header/>
+             <CreateNote
+                passNote={addNote} />
+
+              {addItem.map((val, index)=>{
+               return(<Node 
+                  key={index} 
+                  id={index} 
+                  title={val.title} 
+                  content={val.content}
+                  deleteItem={onDelete}
+                  /> 
+                  );
+            })}
+
+             <Footer/>
+
+          </>
+	);
+};
 
 export default App;
